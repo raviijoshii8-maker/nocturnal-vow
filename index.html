@@ -1,0 +1,793 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>NOCTURNAL VOW | Dark Romance Atelier</title>
+  <!-- Google Fonts: Romantic Serif + Modern Sans -->
+  <link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400;1,500&family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      cursor: none;
+    }
+
+    :root {
+      --bg: #050304;
+      --surface: #0f0b0d;
+      --surface-elevated: #1a1418;
+      --text: #f5efed;
+      --text-soft: #cfc2bc;
+      --text-muted: #6b5a55;
+      --accent: #b85c6b;
+      --accent-glow: #e08b9a;
+      --accent-deep: #7a2e3d;
+      --accent-subtle: #2e1a20;
+      --border-light: #2b1f23;
+      --shadow-sm: 0 15px 35px rgba(0, 0, 0, 0.6);
+      --shadow-lg: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+      --transition: 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    [data-theme="light"] {
+      --bg: #faf6f3;
+      --surface: #ffffff;
+      --surface-elevated: #faf0ec;
+      --text: #1f171a;
+      --text-soft: #8b7b74;
+      --text-muted: #c5b5ae;
+      --accent: #c26675;
+      --accent-glow: #db8b9a;
+      --accent-deep: #9e4555;
+      --accent-subtle: #fae9ec;
+      --border-light: #e5dbd7;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Poppins', sans-serif;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* Custom Cursor */
+    .cursor-dot {
+      width: 8px;
+      height: 8px;
+      background: var(--accent-glow);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 10000;
+      transition: transform 0.1s ease;
+    }
+    .cursor-outline {
+      width: 40px;
+      height: 40px;
+      border: 1.5px solid var(--accent-glow);
+      border-radius: 50%;
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      transition: all 0.15s ease-out;
+      opacity: 0.6;
+    }
+
+    /* Floating Dust Particles */
+    .dust-particle {
+      position: fixed;
+      background: radial-gradient(circle, var(--accent-glow), transparent);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      animation: floatDust 8s infinite linear;
+    }
+    @keyframes floatDust {
+      0% { transform: translateY(100vh) scale(0); opacity: 0; }
+      10% { opacity: 0.4; }
+      90% { opacity: 0.2; }
+      100% { transform: translateY(-20vh) scale(1.2); opacity: 0; }
+    }
+
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: var(--surface); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 4px; }
+
+    /* Header - Ethereal Glass */
+    .vow-header {
+      position: fixed;
+      width: 100%;
+      top: 0;
+      z-index: 1000;
+      background: rgba(5, 3, 4, 0.75);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(184, 92, 107, 0.4);
+      transition: var(--transition);
+    }
+    [data-theme="light"] .vow-header {
+      background: rgba(250, 246, 243, 0.85);
+    }
+
+    .nav-container {
+      max-width: 1450px;
+      margin: 0 auto;
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .brand {
+      font-family: 'Marcellus', serif;
+      font-size: 1.8rem;
+      font-weight: 400;
+      letter-spacing: 3px;
+      color: var(--accent-glow);
+      text-transform: uppercase;
+      font-style: normal;
+      text-shadow: 0 0 8px rgba(184, 92, 107, 0.3);
+    }
+    .brand span {
+      font-weight: 300;
+      font-size: 1rem;
+      letter-spacing: 4px;
+      display: inline-block;
+      margin-left: 6px;
+      color: var(--text-soft);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.2rem;
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      font-weight: 500;
+      letter-spacing: 2.5px;
+    }
+    .nav-links a {
+      position: relative;
+      color: var(--text);
+      transition: 0.2s;
+      text-decoration: none;
+    }
+    .nav-links a:hover { color: var(--accent-glow); letter-spacing: 3px; }
+
+    .utility-actions {
+      display: flex;
+      gap: 1.8rem;
+      align-items: center;
+    }
+    #themeToggle {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      color: var(--text);
+      transition: 0.2s;
+    }
+    .cart-icon {
+      position: relative;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: 0.2s;
+    }
+    .cart-icon:hover { color: var(--accent-glow); transform: scale(1.05); }
+    .cart-count {
+      background: var(--accent);
+      color: var(--bg);
+      font-size: 0.6rem;
+      font-weight: 700;
+      border-radius: 30px;
+      width: 18px;
+      height: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      position: absolute;
+      top: -8px;
+      right: -12px;
+    }
+
+    /* Hero - Cinematic Vow */
+    .hero-vow {
+      min-height: 95vh;
+      display: flex;
+      align-items: center;
+      position: relative;
+      background-image: url('https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1974&auto=format&fit=crop');
+      background-size: cover;
+      background-position: 50% 30%;
+      margin-top: 0;
+    }
+    .hero-vow::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at 20% 40%, rgba(0,0,0,0.5) 0%, rgba(5,3,4,0.85) 90%);
+      z-index: 1;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 680px;
+      padding: 0 7%;
+    }
+    .hero-sub {
+      font-size: 0.65rem;
+      letter-spacing: 8px;
+      text-transform: uppercase;
+      font-weight: 400;
+      margin-bottom: 1rem;
+      color: var(--accent-glow);
+      background: rgba(0,0,0,0.4);
+      display: inline-block;
+      padding: 0.4rem 1rem;
+      backdrop-filter: blur(4px);
+    }
+    .hero-main-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 8vw, 6rem);
+      font-weight: 700;
+      line-height: 1.05;
+      margin-bottom: 1.2rem;
+      color: #fff9f5;
+      text-shadow: 2px 2px 12px rgba(0,0,0,0.4);
+    }
+    .hero-quote {
+      font-size: 0.85rem;
+      font-weight: 300;
+      margin-bottom: 2rem;
+      border-left: 3px solid var(--accent-glow);
+      padding-left: 1.2rem;
+      font-style: italic;
+      max-width: 450px;
+    }
+
+    .btn-primary {
+      background: transparent;
+      border: 1.5px solid var(--accent-glow);
+      color: var(--accent-glow);
+      padding: 1rem 2.4rem;
+      font-size: 0.7rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-block;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+    }
+    .btn-primary:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: var(--bg);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(184,92,107,0.3);
+    }
+
+    /* Collection Header */
+    .collection-header {
+      max-width: 1400px;
+      margin: 4rem auto 1rem auto;
+      padding: 0 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 1rem;
+    }
+    .collection-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 600;
+      font-style: italic;
+      color: var(--accent-glow);
+      letter-spacing: -0.5px;
+    }
+    .collection-header p {
+      color: var(--text-soft);
+      font-size: 0.7rem;
+      letter-spacing: 2px;
+    }
+
+    /* Grid Shop - Unique Tilt Effect */
+    .grid-shop {
+      max-width: 1400px;
+      margin: 2rem auto 5rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+      gap: 2rem 1.8rem;
+    }
+
+    .product-card {
+      background: var(--surface);
+      border-radius: 0;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      border: 1px solid var(--border-light);
+      position: relative;
+    }
+    .product-card:hover {
+      transform: translateY(-8px) rotateX(2deg);
+      border-color: var(--accent);
+      box-shadow: 0 20px 35px -10px rgba(184,92,107,0.25);
+    }
+    .card-img {
+      position: relative;
+      aspect-ratio: 4 / 5;
+      overflow: hidden;
+      background: var(--surface-elevated);
+    }
+    .card-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.6s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    }
+    .product-card:hover .card-img img { transform: scale(1.06); }
+    .card-overlay {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+      padding: 1rem;
+      opacity: 0;
+      transition: 0.3s;
+      text-align: center;
+    }
+    .product-card:hover .card-overlay { opacity: 1; }
+    .add-vow-btn {
+      background: var(--accent);
+      border: none;
+      width: 85%;
+      padding: 0.7rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      transition: 0.2s;
+      color: var(--bg);
+      font-family: 'Poppins', sans-serif;
+    }
+    .add-vow-btn:hover { background: var(--accent-glow); letter-spacing: 2.5px; }
+    .product-info {
+      padding: 1rem 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .product-text h4 {
+      font-size: 0.55rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      color: var(--accent);
+      letter-spacing: 2px;
+    }
+    .product-text h3 {
+      font-family: 'Marcellus', serif;
+      font-size: 1rem;
+      font-weight: 500;
+      margin-top: 4px;
+    }
+    .price-area { text-align: right; }
+    .sale-price { font-weight: 700; font-size: 1rem; color: var(--accent-glow); }
+    .original-price { font-size: 0.65rem; text-decoration: line-through; color: var(--text-muted); margin-left: 0.3rem; }
+
+    /* Lookbook Section - NEW UI ELEMENT */
+    .lookbook-section {
+      max-width: 1400px;
+      margin: 3rem auto;
+      padding: 2rem;
+      background: var(--surface-elevated);
+      border-left: 4px solid var(--accent);
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .lookbook-text {
+      flex: 1;
+      min-width: 220px;
+    }
+    .lookbook-text h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--accent-glow);
+      margin-bottom: 0.5rem;
+    }
+    .lookbook-text p {
+      font-size: 0.75rem;
+      color: var(--text-soft);
+      margin-bottom: 1rem;
+    }
+    .btn-secondary {
+      background: none;
+      border: 1px solid var(--accent);
+      padding: 0.7rem 1.5rem;
+      font-size: 0.65rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      color: var(--text);
+      transition: 0.2s;
+    }
+    .btn-secondary:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    .lookbook-grid {
+      flex: 1.5;
+      display: flex;
+      gap: 1rem;
+    }
+    .lookbook-grid img {
+      width: calc(33% - 0.7rem);
+      aspect-ratio: 3/4;
+      object-fit: cover;
+      filter: grayscale(0.2);
+      transition: 0.3s;
+      border: 1px solid var(--border-light);
+    }
+    .lookbook-grid img:hover {
+      filter: grayscale(0);
+      transform: scale(1.02);
+      border-color: var(--accent);
+    }
+
+    /* Cart Sidebar - same elegant design */
+    .cart-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      visibility: hidden;
+      opacity: 0;
+      transition: 0.3s ease;
+    }
+    .cart-overlay.active {
+      visibility: visible;
+      opacity: 1;
+    }
+    .cart-sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 100%;
+      max-width: 480px;
+      height: 100vh;
+      background: var(--surface);
+      border-left: 1px solid var(--accent);
+      box-shadow: var(--shadow-lg);
+      z-index: 2001;
+      transform: translateX(100%);
+      transition: transform 0.4s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      display: flex;
+      flex-direction: column;
+    }
+    .cart-overlay.active .cart-sidebar {
+      transform: translateX(0);
+    }
+    .cart-header {
+      padding: 1.5rem;
+      border-bottom: 1px solid var(--accent);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: var(--surface);
+    }
+    .cart-header h3 {
+      font-family: 'Marcellus', serif;
+      font-size: 1.6rem;
+      font-weight: 400;
+      color: var(--accent-glow);
+    }
+    .close-cart {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .cart-items {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+    .cart-item {
+      display: flex;
+      gap: 1rem;
+      padding: 0.8rem;
+      background: var(--surface-elevated);
+      border: 1px solid var(--border-light);
+      position: relative;
+    }
+    .cart-item-img {
+      width: 70px;
+      height: 85px;
+      object-fit: cover;
+    }
+    .cart-item-details {
+      flex: 1;
+    }
+    .cart-item-name {
+      font-family: 'Marcellus', serif;
+      font-size: 0.9rem;
+    }
+    .cart-item-price {
+      font-size: 0.8rem;
+      color: var(--accent-glow);
+    }
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .quantity-btn {
+      background: var(--accent-subtle);
+      border: none;
+      width: 26px;
+      height: 26px;
+      cursor: pointer;
+      color: var(--text);
+      font-weight: 700;
+    }
+    .quantity-btn:hover { background: var(--accent); color: var(--bg); }
+    .remove-item {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+    .cart-footer {
+      padding: 1.5rem;
+      border-top: 1px solid var(--accent);
+      background: var(--surface);
+    }
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      font-weight: 700;
+      margin-bottom: 1.2rem;
+    }
+    .checkout-btn {
+      width: 100%;
+      background: var(--accent);
+      border: none;
+      padding: 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      cursor: pointer;
+      color: var(--bg);
+    }
+    .empty-cart {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 2rem;
+    }
+
+    footer {
+      background: var(--surface-elevated);
+      margin-top: 4rem;
+      padding: 3rem 2rem;
+      border-top: 1px solid var(--accent);
+      text-align: center;
+    }
+    .footer-brand {
+      font-family: 'Marcellus', serif;
+      font-size: 1.8rem;
+      color: var(--accent-glow);
+    }
+    .footer-tag {
+      font-size: 0.65rem;
+      letter-spacing: 2px;
+      margin-top: 0.5rem;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 800px) {
+      .nav-container { flex-direction: column; }
+      .lookbook-section { flex-direction: column; }
+      .lookbook-grid img { width: 100%; }
+    }
+  </style>
+  
+  <!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-SBJZ7C7VV0"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-SBJZ7C7VV0');
+</script>
+  
+  
+</head>
+<body>
+
+<div class="cursor-dot"></div>
+<div class="cursor-outline"></div>
+
+<!-- Entry Modal - Romantic Vow -->
+<div id="entryModal" style="position: fixed; inset: 0; z-index: 2100; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,0.95); backdrop-filter: blur(12px); transition: 0.3s;">
+  <div style="background: var(--surface); max-width: 480px; width: 90%; border: 1px solid var(--accent); padding: 2.5rem; text-align: center; position: relative;">
+    <button id="closeModalBtn" style="position: absolute; top: 1rem; right: 1.5rem; background: none; border: none; font-size: 1.4rem; color: var(--text-muted); cursor: pointer;">✕</button>
+    <div style="width: 70px; height: 70px; background: rgba(184,92,107,0.2); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; margin-bottom: 1rem;"><i class="fas fa-feather-alt" style="font-size: 2rem; color: var(--accent-glow);"></i></div>
+    <h2 style="font-family: 'Playfair Display', serif; font-size: 2.2rem; color: var(--accent-glow);">NOCTURNAL VOW</h2>
+    <p style="margin: 1rem 0; color: var(--text-soft); font-size: 0.85rem;">Where shadows embrace elegance. Each garment is a silent promise of timeless beauty. Enter the sanctum of dark romance.</p>
+    <button id="enterBtn" style="background: var(--accent); border: none; padding: 0.8rem 2rem; font-weight: 600; letter-spacing: 2px; cursor: pointer; color: var(--bg); width: 100%;">ENTER THE VOW</button>
+  </div>
+</div>
+
+<header class="vow-header">
+  <div class="nav-container">
+    <div class="brand">NOCTURNAL VOW<span>EST. MMXXV</span></div>
+    <nav class="nav-links">
+      <a href="#shop">COLLECTION</a>
+      <a href="#lookbook">LOOKBOOK</a>
+      <a href="#shop">HAUTE NOIR</a>
+      <a href="#">RITUALS</a>
+    </nav>
+    <div class="utility-actions">
+      <button id="themeToggle">🌙</button>
+      <div class="cart-icon" id="cartIcon">
+        <i class="fas fa-ring"></i>
+        <span class="cart-count" id="cartCount">0</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero-vow">
+    <div class="hero-content">
+      <div class="hero-sub">ETERNAL NOIR COLLECTION</div>
+      <h1 class="hero-main-title">Vow of the<br>Midnight Rose</h1>
+      <div class="hero-quote">"In darkness, we find the truest form of beauty. A covenant between silk and shadow."</div>
+      <a href="#shop" class="btn-primary">DISCOVER THE RITUAL →</a>
+    </div>
+  </section>
+
+  <div class="collection-header" id="shop">
+    <h2>Nocturnal Offerings · Vol. I</h2>
+    <p>13 limited silhouettes / hand-draped luxury</p>
+  </div>
+
+  <div class="grid-shop" id="productGrid"></div>
+
+  <!-- Lookbook Section - unique UI -->
+  <div class="lookbook-section" id="lookbook">
+    <div class="lookbook-text">
+      <h3>VISIONS OF DARKNESS</h3>
+      <p>An intimate editorial captured in the catacombs of Milan. Each photograph unveils the raw emotion behind the collection.</p>
+      <button class="btn-secondary" id="lookbookBtn">EXPLORE THE EDITORIAL →</button>
+    </div>
+    <div class="lookbook-grid">
+      <img src="https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1974&auto=format&fit=crop" alt="lookbook 1">
+      <img src="https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=687&auto=format&fit=crop" alt="lookbook 2">
+      <img src="https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=764&auto=format&fit=crop" alt="lookbook 3">
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-brand">NOCTURNAL VOW</div>
+  <div class="footer-tag">LONDON · PARIS · SEOUL · VIENNA</div>
+  <p style="font-size:0.6rem; opacity:0.5; margin-top:1rem;">© 2026 NOCTURNAL VOW ATELIER. ALL RITES RESERVED.</p>
+</footer>
+
+<div id="cartOverlay" class="cart-overlay">
+  <div class="cart-sidebar">
+    <div class="cart-header"><h3>Vow Cart</h3><button class="close-cart" id="closeCartBtn"><i class="fas fa-times"></i></button></div>
+    <div class="cart-items" id="cartItemsContainer"><div class="empty-cart">Your vow is empty.<br>Add an offering.</div></div>
+    <div class="cart-footer" id="cartFooter" style="display:none;"><div class="cart-total"><span>Total</span><span id="cartTotalPrice">₹0</span></div><button class="checkout-btn" id="checkoutBtn">Seal the Vow →</button></div>
+  </div>
+</div>
+
+<script>
+  // Collection: Dark Romance
+  const products = [
+    { id: 1, name: "Raven Velvet Gown", category: "EVENING", original: 15999, discountPrice: 12799, img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=687&auto=format&fit=crop" },
+    { id: 2, name: "Nocturnal Silk Blazer", category: "TAILORING", original: 13999, discountPrice: 11199, img: "https://images.unsplash.com/photo-1594938298603-c8148c4dae35?q=80&w=687&auto=format&fit=crop" },
+    { id: 3, name: "Shadow Lace Corset", category: "TOPS", original: 4999, discountPrice: 3999, img: "https://images.unsplash.com/photo-1515372039744-b8f02a3ae446?q=80&w=688&auto=format&fit=crop" },
+    { id: 4, name: "Midnight Tulle Skirt", category: "BOTTOMS", original: 6999, discountPrice: 5599, img: "https://images.unsplash.com/photo-1581044777550-4cfa60707c03?q=80&w=686&auto=format&fit=crop" },
+    { id: 5, name: "Crimson Velvet Choker", category: "ACCESSORIES", original: 2499, discountPrice: 1999, img: "https://images.unsplash.com/photo-1556905055-8f358a7a47b2?q=80&w=600&auto=format&fit=crop" },
+    { id: 6, name: "Opulent Opera Coat", category: "OUTERWEAR", original: 21999, discountPrice: 17599, img: "https://images.unsplash.com/photo-1539109136881-3be0616acf4b?q=80&w=1974&auto=format&fit=crop" },
+    { id: 7, name: "Moonstone Kimono", category: "LAYERING", original: 7999, discountPrice: 6399, img: "https://images.unsplash.com/photo-1630168343149-9448f0a606ea?q=80&w=686&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" },
+    { id: 8, name: "Velvet Smoking Jacket", category: "OUTERWEAR", original: 16999, discountPrice: 13599, img: "https://images.unsplash.com/photo-1591047139829-d91aecb6caea?q=80&w=600&auto=format&fit=crop" },
+    { id: 9, name: "Onyx Wide Trousers", category: "BOTTOMS", original: 6499, discountPrice: 5199, img: "https://images.unsplash.com/photo-1594633312681-425c7b97ccd1?q=80&w=600&auto=format&fit=crop" },
+    { id: 10, name: "Pearl Embellished Gown", category: "EVENING", original: 28999, discountPrice: 23199, img: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=687&auto=format&fit=crop" },
+    { id: 11, name: "Cashmere Noir Sweater", category: "KNITWEAR", original: 8499, discountPrice: 6799, img: "https://images.unsplash.com/photo-1576566588028-4147f3842f27?q=80&w=764&auto=format&fit=crop" },
+    { id: 12, name: "Satin Lapel Blazer", category: "TAILORING", original: 12499, discountPrice: 9999, img: "https://plus.unsplash.com/premium_photo-1661313817350-1fa759c43a3b?q=80&w=1217&auto=format&fit=crop" }
+  ];
+
+  let cart = [];
+  const cartOverlay = document.getElementById('cartOverlay');
+  const cartIcon = document.getElementById('cartIcon');
+  const closeCartBtn = document.getElementById('closeCartBtn');
+  const cartItemsContainer = document.getElementById('cartItemsContainer');
+  const cartFooter = document.getElementById('cartFooter');
+  const cartTotalPriceSpan = document.getElementById('cartTotalPrice');
+  const cartCountSpan = document.getElementById('cartCount');
+
+  function saveCart() { localStorage.setItem('nocturnalVowCart', JSON.stringify(cart)); }
+  function loadCart() { const saved = localStorage.getItem('nocturnalVowCart'); if(saved) cart = JSON.parse(saved); renderCartUI(); updateCartCount(); }
+  function updateCartCount() { cartCountSpan.innerText = cart.reduce((s,i)=> s+i.quantity,0); }
+  function renderCartUI() {
+    if(cart.length===0){ cartItemsContainer.innerHTML='<div class="empty-cart">Your vow is empty.<br>Add an offering.</div>'; cartFooter.style.display='none'; saveCart(); return; }
+    cartFooter.style.display='block'; let html='', total=0;
+    cart.forEach(item=>{ total+=item.price*item.quantity; html+=`<div class="cart-item" data-id="${item.id}"><img class="cart-item-img" src="${item.img}"><div class="cart-item-details"><div class="cart-item-name">${item.name}</div><div class="cart-item-price">₹${item.price.toLocaleString('en-IN')}</div><div class="cart-item-quantity"><button class="quantity-btn dec-qty" data-id="${item.id}">-</button><span>${item.quantity}</span><button class="quantity-btn inc-qty" data-id="${item.id}">+</button></div></div><button class="remove-item" data-id="${item.id}"><i class="fas fa-trash-alt"></i></button></div>`; });
+    cartItemsContainer.innerHTML=html; cartTotalPriceSpan.innerText=`₹${total.toLocaleString('en-IN')}`;
+    document.querySelectorAll('.dec-qty').forEach(btn=>btn.addEventListener('click',()=>updateQuantity(parseInt(btn.dataset.id),-1)));
+    document.querySelectorAll('.inc-qty').forEach(btn=>btn.addEventListener('click',()=>updateQuantity(parseInt(btn.dataset.id),1)));
+    document.querySelectorAll('.remove-item').forEach(btn=>btn.addEventListener('click',()=>removeFromCart(parseInt(btn.dataset.id))));
+    updateCartCount(); saveCart();
+  }
+  function updateQuantity(id,delta){ let idx=cart.findIndex(i=>i.id===id); if(idx!==-1){ let nq=cart[idx].quantity+delta; if(nq<=0) cart.splice(idx,1); else cart[idx].quantity=nq; renderCartUI();}}
+  function removeFromCart(id){ cart=cart.filter(i=>i.id!==id); renderCartUI();}
+  function addToCart(id){
+    let p=products.find(p=>p.id===id); if(!p) return;
+    let exist=cart.find(i=>i.id===id);
+    if(exist) exist.quantity+=1; else cart.push({id:p.id,name:p.name,price:p.discountPrice,quantity:1,img:p.img});
+    renderCartUI(); updateCartCount(); cartOverlay.classList.add('active');
+    let btn=document.querySelector(`.add-btn-${id}`); if(btn){let orig=btn.innerText; btn.innerText="✓ VOWED"; setTimeout(()=>btn.innerText=orig,800);}
+  }
+  function renderProducts(){
+    const container=document.getElementById('productGrid'); if(!container) return;
+    container.innerHTML='';
+    products.forEach(p=>{
+      let card=document.createElement('div'); card.className='product-card'; let disc=Math.round(((p.original-p.discountPrice)/p.original)*100);
+      card.innerHTML=`<div class="card-img"><img src="${p.img}" loading="lazy"><div class="card-overlay"><button class="add-vow-btn add-btn-${p.id}" data-id="${p.id}">✦ PLEDGE VOW</button></div></div><div class="product-info"><div class="product-text"><h4>${p.category}</h4><h3>${p.name}</h3></div><div class="price-area"><span class="sale-price">₹${p.discountPrice.toLocaleString('en-IN')}</span><span class="original-price">₹${p.original.toLocaleString('en-IN')}</span><div style="font-size:0.55rem; color:var(--accent-glow);">-${disc}%</div></div></div>`;
+      container.appendChild(card);
+    });
+    document.querySelectorAll('[class*="add-btn-"]').forEach(btn=>btn.addEventListener('click',(e)=>{ e.preventDefault(); addToCart(parseInt(btn.getAttribute('data-id'))); }));
+  }
+  function initTheme(){ let th=localStorage.getItem('nocturnalVow-theme')||(window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'); document.documentElement.setAttribute('data-theme',th); let tb=document.getElementById('themeToggle'); if(tb) tb.textContent=th==='dark'?'☀️':'🌙'; }
+  function toggleTheme(){ let cur=document.documentElement.getAttribute('data-theme'); let nxt=cur==='dark'?'light':'dark'; document.documentElement.setAttribute('data-theme',nxt); localStorage.setItem('nocturnalVow-theme',nxt); let tb=document.getElementById('themeToggle'); if(tb) tb.textContent=nxt==='dark'?'☀️':'🌙';}
+  // Modal & Cursor
+  const modal=document.getElementById('entryModal'); const enterBtn=document.getElementById('enterBtn'); const closeModalBtn=document.getElementById('closeModalBtn');
+  function closeModal(){ if(modal) modal.style.display='none'; }
+  if(enterBtn) enterBtn.addEventListener('click',closeModal); if(closeModalBtn) closeModalBtn.addEventListener('click',closeModal);
+  cartIcon.addEventListener('click',()=>cartOverlay.classList.add('active'));
+  closeCartBtn.addEventListener('click',()=>cartOverlay.classList.remove('active'));
+  cartOverlay.addEventListener('click',(e)=>{if(e.target===cartOverlay)cartOverlay.classList.remove('active');});
+  document.getElementById('checkoutBtn')?.addEventListener('click',()=>{ alert("Your nocturnal vow is sealed. A confirmation will arrive in shadow."); cart=[]; renderCartUI(); cartOverlay.classList.remove('active');});
+  document.getElementById('lookbookBtn')?.addEventListener('click',()=>alert("Immerse in the editorial — a visual poem of darkness and desire."));
+  // Cursor animation
+  const dot=document.querySelector('.cursor-dot'), outline=document.querySelector('.cursor-outline');
+  document.addEventListener('mousemove',(e)=>{ dot.style.transform=`translate(${e.clientX-4}px, ${e.clientY-4}px)`; outline.style.transform=`translate(${e.clientX-20}px, ${e.clientY-20}px)`; });
+  document.querySelectorAll('a, button, .cart-icon, .product-card').forEach(el=>el.addEventListener('mouseenter',()=>{ outline.style.transform='scale(1.5)'; outline.style.opacity='0.2';}));
+  document.querySelectorAll('a, button, .cart-icon, .product-card').forEach(el=>el.addEventListener('mouseleave',()=>{ outline.style.transform='scale(1)'; outline.style.opacity='0.6';}));
+  // Floating particles
+  for(let i=0;i<45;i++){ let p=document.createElement('div'); p.classList.add('dust-particle'); let size=Math.random()*4+2; p.style.width=size+'px'; p.style.height=size+'px'; p.style.left=Math.random()*100+'%'; p.style.animationDelay=Math.random()*8+'s'; p.style.animationDuration=6+Math.random()*6+'s'; document.body.appendChild(p); }
+  renderProducts(); initTheme(); loadCart(); document.getElementById('themeToggle')?.addEventListener('click',toggleTheme);
+</script>
+</body>
+</html>
